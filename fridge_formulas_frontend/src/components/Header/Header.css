@@ -1,0 +1,54 @@
+.header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #3b673b;
+    border-radius: 20px;
+    padding: 12px;
+    color: white;
+}
+
+.header__brand{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.header__navabar_items{
+    display: flex;
+    gap: 40px;
+    list-style: none;
+}
+
+.header__navabar_items a{
+    text-decoration: none;
+    color: white;
+    transition: ease-in-out 0.3s;
+}
+
+.header__navabar_items a:hover{
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.header__buttons{
+    display: flex;
+    gap: 10px;
+}
+
+.header__login__button,
+.header__signup__button{
+    background-color: transparent;
+    border: none;
+    cursor: pointer ;
+    font-size: 16px;
+    color: white;
+    transition: ease-in-out 0.3s;
+    
+}
+
+.header__login__button:hover,
+.header__signup__button:hover{
+    font-size: 18px;
+    font-weight: bold;
+}
