@@ -1,20 +1,19 @@
-import brocIcon from "../../assets/brocolli.png";
 import "./Card.css";
 
-function Card({ cardTitle, cardIcon }) {
+function Card({ cardTitle, cardPoints, cardIcon }) {
   return (
     <div className="card">
       <div className="card__title">
-        <img className="card__title_icon" src={brocIcon} alt="card Icon" />
+        <h4 className="card__title_icon">{cardIcon}</h4>
         <h4 className="card__title_text">{cardTitle}</h4>
       </div>
-      <ul className="card__info">
-        <li className="card__point">Point 1</li>
-        <li className="card__point">Point 2</li>
-        <li className="card__point">Point 3</li>
-        <li className="card__point">Point 4</li>
-      </ul>
-      <button className="card__button">Select</button>
+      <div className="card__info">
+        <ul className="card__points">
+          {cardPoints.map((point, index) => {
+            return <li key={index}>{point}</li>;
+          })}
+        </ul>
+      </div>
     </div>
   );
 }

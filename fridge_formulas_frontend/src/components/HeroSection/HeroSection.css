@@ -1,48 +1,101 @@
 .hero-section {
   padding: 20px;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  grid-template-columns: repeat(2, auto);
+}
+
+.hero-section__info {
   display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .hero-section__headline {
-  position: relative;
-  top: 20%;
-  font-size: 40px;
+  font-size: 42px;
   text-align: center;
   line-height: 120%;
+  margin-bottom: 10px;
 }
 
-.hero-section__headline span{
-    color: green;
+.hero-section__headline span {
+  color: green;
 }
 
 .hero-section__tagline {
-  position: relative;
+  margin: 0;
   top: 20%;
   font-size: 20px;
   text-align: center;
-  padding: 20px 40px;
+  padding: 20px 100px;
   line-height: 130%;
+  margin-bottom: 10px;
 }
 
 .hero-section__image {
-  width: 800px;
-  height: 800px;
+  width: 600px;
 }
 
-.hero-section__button{
-    position: relative;
-    top: 25%;
-    left: 35%;
-    padding: 20px;
-    font-size: 18px;
-    background-color: #3b673b;
-    color: white;
-    border: none;
-    border-radius: 20px;
-    transition: ease-in-out 0.1s;
-    font-weight: bold;
+.hero-section__button {
+  top: 25%;
+  left: 35%;
+  padding: 20px;
+  font-size: 18px;
+  background-color: #3b673b;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  transition: ease-in-out 0.1s;
+  font-weight: bold;
 }
 
-.hero-section__button:hover{
-   background-color: #a1bd60;
+.hero-section__button:hover {
+  background-color: #a1bd60;
+}
+
+@media (max-width: 1200px) {
+  .hero-section {
+    grid-template-columns: repeat(2, auto);
+    justify-content: center ;
+
+  }
+
+  .hero-section__image{
+    width: 400px;
+  }
+
+  .hero-section__headline{
+    font-size: 38px;
+    margin-bottom: 12px;
+  }
+
+  .hero-section__tagline{
+    padding: 10px 20px;
+    margin-bottom: 12px;
+  }
+
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    grid-template-columns: repeat(1, auto);
+    justify-content: center ;
+
+  }
+
+  .hero-section__headline{
+    font-size: 36px;
+    padding: 0 10px;
+    margin-bottom: 12px;
+  }
+
+  .hero-section__tagline{
+    padding: 10px 20px;
+    margin-bottom: 12px;
+  }
+
+  .hero-section__image{
+    width: 350px;
+  }
 }

@@ -1,7 +1,7 @@
 import Card from "../Card/Card";
-import {dietCards} from "../../utils/constants"
-function DietCard() {
-  return dietCards.map((card,index) => {
+import {howItWorks} from "../../utils/constants";
+function HowItWorks() {
+  return howItWorks.map((card,index) => {
     return (
       <Card
         key={index}
@@ -9,8 +9,9 @@ function DietCard() {
         cardIcon={card.cardIcon}
         cardPoints={card.cardPoints}
       />
+      
     );
   });
 }
 
-export default DietCard;
+export default HowItWorks;

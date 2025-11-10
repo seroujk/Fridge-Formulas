@@ -1,0 +1,32 @@
+.carousel {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    background: #3b673b;
+    padding: 1.2rem 0;
+  }
+  
+  .carousel__track {
+    display: inline-block;
+    white-space: nowrap;
+    animation: scroll 20s linear infinite;
+  }
+  
+  .carousel__track span {
+    margin: 0 2rem;
+    font-size: 22px;
+    font-weight: 200;
+    color: #fff;
+    letter-spacing: 1px;
+  }
+  
+  
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%); /* scroll half the track length (because duplicated) */
+    }
+  }
+  

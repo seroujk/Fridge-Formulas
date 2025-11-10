@@ -1,17 +1,119 @@
 import "./App.css";
+import React from "react";
+import { Route } from "react-router-dom";
+import { useState, useEffect } from "react";
 import Header from "./components/Header/Header";
 import HeroSection from "./components/HeroSection/HeroSection";
-import Card from "./components/Card/Card";
+import Carousel from "./components/Carousel/Carousel";
+import CardsSection from "./components/CardsSection/CardsSection";
+import Footer from "./components/Footer/Footer";
+import FridgeModal from "./components/FridgeModal/FridgeModal";
+import LoginModal from "./components/LoginModal/LoginModal";
+import { getRecipeInfo } from "./utils/OpenAIApi";
+import SignUpModal from "./components/SignUpModal/SignUpModal";
+import WhyBuildthis from "./components/WhyBuildThis/WhyBuildThis";
 
 function App() {
+  const [formModal, setFormModal] = useState(null);
+  const [userInput, setUserInput] = useState(null);
+  const [recipes, setRecipes] = useState(null);
+
+  useEffect(() => {
+    if (userInput) {
+      getRecipeInfo(userInput)
+        .then((res) => {
+          const content = res.choices?.[0].message?.content;
+          setRecipes(JSON.parse(content));
+        })
+        .catch((err) => console.error("API Error:", err));
+    }
+  }, [userInput]);
+
+  const handleFormOpen = (formModal) => {
+    setFormModal(formModal);
+  };
+
+  const handlFormClose = () => {
+    setFormModal(null);
+  };
+
+  const handeFridgeSubmit = (items, diet, e) => {
+    e.preventDefault();
+    const fridgeItems = items
+      .filter((item) => item.value.length > 0 && item.value != null)
+      .map((item) => {
+        return item.value;
+      });
+    setUserInput([diet, fridgeItems]);
+  };
+
   return (
     <>
-      <Header />
-      <HeroSection />
-      <Card 
-      cardTitle="Vegetarian"
-      cardIcon="https://www.flaticon.com/free-icon/broccoli_5601254"
+      <Header
+        onButtonClick={handleFormOpen}
+        formModal={["login-modal", "signup-modal"]}
       />
+      <Route exact path="/">
+        <HeroSection
+          onButtonClick={handleFormOpen}
+          formModal={"fridge-modal"}
+        />
+        <Carousel />
+      </Route>
+      <Route exact path="/">
+        <div id="how-it-works">
+          <CardsSection
+            sectionTitle="How It Works"
+            onButtonClick={handleFormOpen}
+            formModal="fridge-modal"
+            buttonText="Generate Meals"
+          />
+        </div>
+        <div id="dietary-templates">
+          <CardsSection
+            sectionTitle="Dietary Templates"
+            onButtonClick={handleFormOpen}
+            formModal="fridge-modal"
+            buttonText="Generate Meals"
+          />
+        </div>
+        <div id="meal-plans">
+          {recipes ? (
+            <CardsSection
+              recipes={recipes}
+              sectionTitle="Your Meals Plans"
+              buttonText="Save Meal Plan"
+            />
+          ) : null}
+        </div>
+      </Route>
+
+      <Route exact path="/why-build-it">
+        <WhyBuildthis />
+      </Route>
+
+      <FridgeModal
+        isOpen={formModal === "fridge-modal"}
+        onClose={handlFormClose}
+        onSubmit={handeFridgeSubmit}
+        formTitle="Fridge Form"
+        formSubtitle="Choose your diet and add your fridge items.
+        Enter a minumum of 2 items"
+        buttonText1="+ Add Item"
+        buttonText2="Delete Item"
+        buttonText3="Generate Meal Plan"
+      />
+
+      <LoginModal
+        isOpen={formModal === "login-modal"}
+        onClose={handlFormClose}
+      />
+      <SignUpModal
+        isOpen={formModal === "signup-modal"}
+        onClose={handlFormClose}
+      />
+
+      <Footer />
     </>
   );
 }

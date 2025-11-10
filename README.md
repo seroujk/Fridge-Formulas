@@ -30,7 +30,7 @@ Many people:
 - Users describe the items currently in their fridge (e.g., “chicken breast, spinach, eggs, cheddar”).
 
 ### 🤖 AI-Generated Meal Plans
-- The app generates up to **7 meal cards** with:
+- The app generates up to **4 meal cards** with:
   - Complete recipes  
   - Step-by-step cooking instructions  
   - Ingredients pulled from the user’s fridge  
@@ -61,9 +61,16 @@ Many people:
 
 ## 5. User Flow
 
-1. **Sign Up / Login** → User selects a dietary preference template.  
+1. **Sign Up / Login** → User selects a dietary preference template.  (In Progress)
 2. **Enter Fridge Inventory** → Input available ingredients.  
-3. **Generate Meal Plans** → Up to 7 AI-powered meal cards appear with recipes and steps.  
-4. **Save Favorites** → Bookmark preferred meals for reuse.  
+3. **Generate Meal Plans** → Up to 4 AI-powered meal cards appear with recipes and steps.  
+4. **Save Favorites** → Bookmark preferred meals for reuse.  (In Progress)
 5. **Fridge Refresh** → Update fridge items anytime for new plans.
 
+
+## 6. Triple Ten Evaluation
+
+1. **API Key** → Please generate your own API key to test the app
+2. **Current Version** → In the current version the login and sign up modals are designed but they are not implemented you can test out
+the recipe generation using the API and the responsive design throughout the web app.
+3. **Questions** → Please let me know if you have any questions regarding the flow of the app. Thank you!
