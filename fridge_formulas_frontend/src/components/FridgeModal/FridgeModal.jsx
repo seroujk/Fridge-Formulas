@@ -1,6 +1,5 @@
 import "./FridgeModal.css";
 import { useState, useEffect } from "react";
-import { HashLink } from "react-router-hash-link";
 function FirdgeModal({
   isOpen,
   formTitle,
@@ -10,6 +9,8 @@ function FirdgeModal({
   buttonText1,
   buttonText2,
   buttonText3,
+  openForm,
+  formToOpen,
 }) {
   const [items, setItems] = useState([{ id: 1, value: "" }]);
   const [isLoading, setIsLoading] = useState(false);
@@ -87,6 +88,7 @@ function FirdgeModal({
                 </label>
                 <input
                   type="text"
+                  minLength="3"
                   id={`item-${item.id}`}
                   value={item.value}
                   onChange={(e) => {
@@ -118,6 +120,7 @@ function FirdgeModal({
           {!isReadyButton ? (
             <button
               type="submit"
+              disabled={!diet || items.length <= 1}
               className="modal__submit-button-fridge"
               onClick={() => {
                 setIsLoading(true);
@@ -134,19 +137,18 @@ function FirdgeModal({
             </button>
           ) : null}
           {isReadyButton ? (
-            <HashLink to="/#meal-plans" smooth="true" duration={600}>
-              <button
-                className="modal__submit-button-fridge"
-                onClick={() => {
-                  onClose();
-                  setIsReadyButton(false);
-                  setDiet(null);
-                  setItems([{ id: 1, value: "" }]);
-                }}
-              >
-                Check My Meals!
-              </button>
-            </HashLink>
+            <button
+              className="modal__submit-button-fridge"
+              onClick={() => {
+                openForm(formToOpen);
+                // onClose();
+                setIsReadyButton(false);
+                setDiet(null);
+                setItems([{ id: 1, value: "" }]);
+              }}
+            >
+              Check My Meals!
+            </button>
           ) : null}
         </form>
       </div>

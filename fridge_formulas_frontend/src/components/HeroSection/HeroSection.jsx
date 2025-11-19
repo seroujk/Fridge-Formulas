@@ -18,7 +18,7 @@ function HeroSection({ formModal, onButtonClick }) {
           onClick={() => onButtonClick(formModal)}
           className="hero-section__button"
         >
-          Try Now For Free!
+          Generate Meal Plans
         </button>
       </div>
       <img

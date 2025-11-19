@@ -28,8 +28,6 @@ function Header({ onButtonClick, formModal }) {
     return () => window.removeEventListener("resize", checkWindowWidth);
   }, []);
 
-  console.log("isHamburger:", isHamburger);
-
   return (
     <div className="header">
       <Link to="/">
@@ -82,47 +80,69 @@ function Header({ onButtonClick, formModal }) {
         <div className="header__mobile-menu">
           <button
             className="header__mobile-menu-button"
-            onClick={() => {setIsMobileOpen(!isMobileOpen);}}>
+            onClick={() => {
+              setIsMobileOpen(!isMobileOpen);
+            }}
+          >
             ☰
           </button>
-          {isMobileOpen?(
+          {isMobileOpen ? (
             <div className="header__mobile-menu-items">
-               <nav className="header__navbar">
-            <ul className="header__mobile__navabar_items">
-              <li>
-                <HashLink to="/#how-it-works" smooth="true" duration={600}>
-                  How It Works
-                </HashLink>
-              </li>
-              <li>
-                <HashLink to="/#dietary-templates" smooth="true" duration={600}>
-                  Dietary Templates
-                </HashLink>
-              </li>
-              <li>
-                <Link to="/why-build-it" duration={600}>
-                  Why I Built This
-                </Link>
-              </li>
-            </ul>
-          </nav>
-          <div className="header__mobile__buttons">
-            <button
-              className="header__mobile__login__button"
-              onClick={() => onButtonClick(formModal[0])}
-            >
-              Log In
-            </button>
-            <button
-              className="header__mobile__signup__button"
-              onClick={() => onButtonClick(formModal[1])}
-            >
-              Sign Up
-            </button>
-          </div>
+              <nav className="header__navbar">
+                <ul className="header__mobile__navabar_items">
+                  <li>
+                    <HashLink
+                      to="/#how-it-works"
+                      smooth="true"
+                      duration={600}
+                      onClick={() => setIsMobileOpen(false)}
+                    >
+                      How It Works
+                    </HashLink>
+                  </li>
+                  <li>
+                    <HashLink
+                      to="/#dietary-templates"
+                      smooth="true"
+                      duration={600}
+                      onClick={() => setIsMobileOpen(false)}
+                    >
+                      Dietary Templates
+                    </HashLink>
+                  </li>
+                  <li>
+                    <Link
+                      to="/why-build-it"
+                      duration={600}
+                      onClick={() => setIsMobileOpen(false)}
+                    >
+                      Why I Built This
+                    </Link>
+                  </li>
+                </ul>
+              </nav>
+              <div className="header__mobile__buttons">
+                <button
+                  className="header__mobile__login__button"
+                  onClick={() => {
+                    setIsMobileOpen(false);
+                    onButtonClick(formModal[0]);
+                  }}
+                >
+                  Log In
+                </button>
+                <button
+                  className="header__mobile__signup__button"
+                  onClick={() => {
+                    setIsMobileOpen(false);
+                    onButtonClick(formModal[1]);
+                  }}
+                >
+                  Sign Up
+                </button>
+              </div>
             </div>
-
-          ):(null)}
+          ) : null}
         </div>
       )}
     </div>

@@ -4,8 +4,7 @@ function ModalWithForm({
   formTitle,
   onClose,
   onSubmit,
-  buttonText1,
-  buttonText2,
+  children
 }) {
  
   if (!isOpen) return null;
@@ -17,14 +16,9 @@ function ModalWithForm({
           Close
         </button>
         <h2>{formTitle}</h2>
-        <form onSubmit={onSubmit}>
-          <label htmlFor="email">Email</label>
-          <input type="email" placeholder="Enter Your Email"/>
-          <label htmlFor="password">Password</label>
-          <input type="password" placeholder="Enter Your Password"/>
-        </form>
-        <button type="submit" className="modal__submit-button">{buttonText1}</button>
-        <button type="button" className="modal__second-button">{buttonText2}</button>
+        <form className="modal__form"onSubmit={onSubmit}>
+         {children}
+         </form>
       </div>
     </div>
   );

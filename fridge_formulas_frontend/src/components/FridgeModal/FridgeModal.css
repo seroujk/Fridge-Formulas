@@ -21,10 +21,8 @@
   padding: 36px 28px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 300px;
   font-family: Arial, sans-serif;
-  width: 496px;
-  top: 10%;
+  top: 20%;
   left: 50%;
   transform: translateX(-50%);
   border-radius: 20px;
@@ -42,6 +40,8 @@ h3 {
 .modal__form {
   display: flex;
   flex-direction: column;
+  max-height: 500px;
+  overflow-y: scroll; 
 }
 
 .modal__close-button {
@@ -93,7 +93,7 @@ h3 {
   border: 1px solid#000000;
   box-sizing: border-box;
   border-radius: 8px;
-  padding: 4px 0;
+  padding: 4px 12px;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 700;
   font-size: 16px;
@@ -105,10 +105,10 @@ h3 {
 
 .modal input[type="text"]:focus,
 .modal input[type="url"]:focus {
-  padding-left: 8px;
+  padding-left: 12px;
 }
 
-.modal__submit-button-fridge {
+.modal__submit-button-fridge{
   margin-top: 32px;
   background-color: #000000;
   color: white;
@@ -202,14 +202,19 @@ select{
 
 
 @media (max-width: 768px) {
-  .modal {
-    width: 300px;
+
+
+
+  .modal__add-button,
+  .modal__delete-button{
+    width: 130px;
   }
 
+  
   .modal__second-button {
     font-size: 14px;
     padding: 10px;
-    width: 40%;
+    width: 140px;
   }
 
   h3 {

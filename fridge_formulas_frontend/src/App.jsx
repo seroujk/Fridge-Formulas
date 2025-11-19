@@ -1,5 +1,5 @@
 import "./App.css";
-import React from "react";
+import React, { Children } from "react";
 import { Route } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Header from "./components/Header/Header";
@@ -9,6 +9,7 @@ import CardsSection from "./components/CardsSection/CardsSection";
 import Footer from "./components/Footer/Footer";
 import FridgeModal from "./components/FridgeModal/FridgeModal";
 import LoginModal from "./components/LoginModal/LoginModal";
+import RecipesModal from "./components/RecipesModal/RecipesModal";
 import { getRecipeInfo } from "./utils/OpenAIApi";
 import SignUpModal from "./components/SignUpModal/SignUpModal";
 import WhyBuildthis from "./components/WhyBuildThis/WhyBuildThis";
@@ -66,7 +67,7 @@ function App() {
             sectionTitle="How It Works"
             onButtonClick={handleFormOpen}
             formModal="fridge-modal"
-            buttonText="Generate Meals"
+            buttonText="Generate Meal Meals"
           />
         </div>
         <div id="dietary-templates">
@@ -74,17 +75,8 @@ function App() {
             sectionTitle="Dietary Templates"
             onButtonClick={handleFormOpen}
             formModal="fridge-modal"
-            buttonText="Generate Meals"
+            buttonText="Generate Meal Meals"
           />
-        </div>
-        <div id="meal-plans">
-          {recipes ? (
-            <CardsSection
-              recipes={recipes}
-              sectionTitle="Your Meals Plans"
-              buttonText="Save Meal Plan"
-            />
-          ) : null}
         </div>
       </Route>
 
@@ -102,17 +94,31 @@ function App() {
         buttonText1="+ Add Item"
         buttonText2="Delete Item"
         buttonText3="Generate Meal Plan"
+        openForm={handleFormOpen}
+        formToOpen="recipes-modal"
       />
 
       <LoginModal
         isOpen={formModal === "login-modal"}
         onClose={handlFormClose}
+        buttonText1="Login"
+        buttonText2="or Sign up"
       />
       <SignUpModal
         isOpen={formModal === "signup-modal"}
         onClose={handlFormClose}
+        buttonText1="Sign Up"
+        buttonText2="or Login"
       />
 
+      <RecipesModal
+        isOpen={formModal === "recipes-modal"}
+        recipes={recipes}
+        onClose={handlFormClose}
+        buttonText1="SaveRecipes"
+        buttonText2="Generate New Meals"
+        formTitle="Your Meal Plan"
+      />
       <Footer />
     </>
   );

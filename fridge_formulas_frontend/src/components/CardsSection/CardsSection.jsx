@@ -1,12 +1,11 @@
 import "./CardsSection.css";
 import DietCard from "../DietCard/DietCard";
 import HowItWorks from "../HowItWorks/HowItWorks";
-import RecipeSection from "../RecipesSection/RecipesSection";
-function CardsSection({ sectionTitle,buttonText, onButtonClick, formModal, recipes }) {
+import RecipesSection from "../RecipesModal/RecipesModal";
+function CardsSection({ sectionTitle, buttonText, onButtonClick, formModal }) {
   const sectionComponents = {
     "Dietary Templates": <DietCard />,
     "How It Works": <HowItWorks />,
-    "Your Meals Plans": <RecipeSection recipes={recipes} />,
   };
 
   const selectedSection = sectionComponents[sectionTitle] || null;
@@ -21,7 +20,7 @@ function CardsSection({ sectionTitle,buttonText, onButtonClick, formModal, recip
           onButtonClick(formModal);
         }}
       >
-       {buttonText}
+        {buttonText}
       </button>
     </div>
   );
