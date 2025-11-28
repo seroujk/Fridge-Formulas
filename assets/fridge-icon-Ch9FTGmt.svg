@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-labelledby="title desc" role="img">
+  <title id="title">Fridge Icon</title>
+  <desc id="desc">A rounded-rectangle two-door fridge with small handles, styled to match the FridgeFormulas header.</desc>
+
+  <!-- Fridge body -->
+  <rect x="4" y="2.5" width="16" height="19" rx="3.25" ry="3.25"/>
+
+  <!-- Door divider -->
+  <line x1="4" y1="11" x2="20" y2="11"/>
+
+  <!-- Handles (short vertical lines) -->
+  <line x1="8.25" y1="8" x2="8.25" y2="9.8"/>
+  <line x1="8.25" y1="13.2" x2="8.25" y2="15"/>
+  
+  <!-- Feet / base detail -->
+  <path d="M6.5 21.5h2.2M15.3 21.5h2.2"/>
+
+  <!-- Optional subtle inner inset for a soft-duotone look (uses currentColor with low opacity) -->
+  <rect x="5.2" y="3.7" width="13.6" height="16.6" rx="2.4" ry="2.4" opacity="0.12" fill="currentColor" stroke="none"/>
+</svg>
