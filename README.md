@@ -65,7 +65,7 @@ Many people:
 2. **Enter Fridge Inventory** → Input available ingredients.  
 3. **Generate Meal Plans** → Up to 4 AI-powered meal cards appear with recipes and steps.  
 4. **Save Favorites** → Bookmark preferred meals for reuse.  (In Progress)
-5. **Fridge Refresh** → Update fridge items anytime for new plans.
+5. **No Sign Up Required** → Users can also generate meals plans without logging in
 
 
 ## 6. Triple Ten Evaluation
