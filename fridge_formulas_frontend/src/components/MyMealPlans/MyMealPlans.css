@@ -1,0 +1,42 @@
+.my-meal-plans{
+    padding: 20px;
+    height: 100vh;
+}
+
+.my-meal-plans__title{
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+
+.my-meal-plans__empty_message{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  
+
+}
+
+.my-meal-plans__empty_message_text{
+    text-align: center;
+}
+
+.my-meal-plans__generate-button{
+    top: 25%;
+    left: 35%;
+    width: 300px;
+    padding: 20px;
+    font-size: 18px;
+    background-color: #3b673b;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    transition: ease-in-out 0.1s;
+    font-weight: bold;
+}
+
+.my-meal-plans__generate-button:hover {
+    background-color: #a1bd60;
+  }
+

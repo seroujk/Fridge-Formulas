@@ -8,8 +8,8 @@ h2{
     
 }
 
-.modal__recipe-save-button{
-    width: 100%;
+.modal__plan-save-button{
+    width: 100% !important;
 }
 
 .modal__meal-plans{

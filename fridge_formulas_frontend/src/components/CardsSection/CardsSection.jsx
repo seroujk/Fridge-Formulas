@@ -1,7 +1,6 @@
 import "./CardsSection.css";
 import DietCard from "../DietCard/DietCard";
 import HowItWorks from "../HowItWorks/HowItWorks";
-import RecipesSection from "../RecipesModal/RecipesModal";
 function CardsSection({ sectionTitle, buttonText, onButtonClick, formModal }) {
   const sectionComponents = {
     "Dietary Templates": <DietCard />,

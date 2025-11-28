@@ -1,13 +1,20 @@
-import "./RecipesModal.css";
+import "./MealPlansModal.css";
 import Card from "../Card/Card";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
-function RecipesModal({
+function MealPlansModal({
   isOpen,
   recipes,
   onClose,
   buttonText1,
   buttonText2,
   formTitle,
+  isLoggedIn,
+  isValidUser,
+  setIsValidUser,
+  onButtonClick,
+  onNotLoggedIn,
+  formModal,
+  setPendingRecipes,
 }) {
   if (recipes) {
     return (
@@ -17,6 +24,8 @@ function RecipesModal({
         buttonText1={buttonText1}
         buttonText2={buttonText2}
         formTitle={formTitle}
+        isValidUser={isValidUser}
+        setIsValidUser={setIsValidUser}
       >
         <div className="modal__meal-plans">
           {recipes.map((recipe, index) => {
@@ -30,9 +39,23 @@ function RecipesModal({
             );
           })}
         </div>
-        <button className="modal__submit-button modal__recipe-save-button">Save to "My Meals"</button>
+        <button
+          className="modal__submit-button modal__plan-save-button"
+          onClick={() => {
+            if (isLoggedIn) {
+              onButtonClick(recipes);
+            }
+            else{
+              setPendingRecipes(recipes);
+              onNotLoggedIn(formModal);
+
+            }
+          }}
+        >
+          Save to "My Meals"
+        </button>
       </ModalWithForm>
     );
   }
 }
-export default RecipesModal;
+export default MealPlansModal;
