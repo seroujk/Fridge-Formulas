@@ -68,7 +68,10 @@ Many people:
 5. **No Sign Up Required** → Users can also generate meals plans without logging in
 
 
-## 6. Triple Ten Evaluation
+## 6. Diployed on GitHub Pages
+1. **Deployment Link** : https://seroujk.github.io/Fridge-Formulas/
+
+## 7. Triple Ten Evaluation
 
 1. **API Key** → Please generate your own API key to test the app
 2. **Current Version** → In the current version the login and sign up modals are designed but they are not implemented you can test out
