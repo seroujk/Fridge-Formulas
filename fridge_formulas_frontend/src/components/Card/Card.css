@@ -1,0 +1,53 @@
+.card {
+  width: 280px;
+  border: 4px solid #3b673b;
+  border-radius: 20px;
+  padding: 16px 20px;
+  margin: 0 auto 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card__title {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.card__title_text {
+  font-size: 24px;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.card__title_icon {
+  font-size: 32px;
+  margin: 0;
+}
+
+.card__info {
+  font-size: 24px;
+}
+
+.card__points {
+  list-style-type: disc;
+}
+
+@media (max-width: 1200px) {
+}
+
+@media (max-width: 768px) {
+    .card{
+      width: 260px;
+    }
+
+    .card__title_text{
+        font-size: 22px;
+    }
+
+    .card__info{
+        font-size: 22px;
+    }
+}
+
