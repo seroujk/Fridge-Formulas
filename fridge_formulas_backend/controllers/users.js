@@ -8,7 +8,6 @@ const ConflictError = require("../errors/ConflictError");
 const UnauthorizedError = require("../errors/UnauthorizedError");
 
 //GET /users/me - returns a user by id
-
 module.exports.getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
@@ -33,7 +32,7 @@ module.exports.getCurrentUser = (req, res, next) => {
 module.exports.updateCurrentUser = (req, res, next) => {
   const { name, avatar } = req.body;
   User.findByIdAndUpdate(
-    user.req._id,
+    req.user._id,
     { name, avatar },
     { new: true, runValidators: true }
   )
@@ -64,9 +63,8 @@ module.exports.signup = (req, res, next) => {
   const { name, avatar, email, password } = req.body;
   bcrypt
     .hash(password, 10)
-    .then((hashedPassword) => {
-      User.create({ name, avatar, email, password: hashedPassword });
-    })
+    .then((hashedPassword) => User.create({ name, avatar, email, password: hashedPassword })
+    )
     .then((user) => {
       const userObject = user.toObject();
       delete userObject.password;
