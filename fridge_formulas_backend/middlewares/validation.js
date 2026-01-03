@@ -54,3 +54,12 @@ module.exports.validateAuthenticationBody = celebrate({
     }),
   }),
 });
+
+
+module.exports.validateMealPlanIds = celebrate({
+  params: Joi.object().keys({
+    mealPlanId: Joi.string().hex().length(24).messages({
+    "string.empty" : 'This item does not exist'
+    }),
+  })
+});
