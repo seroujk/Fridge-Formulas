@@ -75,7 +75,7 @@ function App() {
     setFormModal(null);
   };
 
-  const handeFridgeSubmit = (items, diet, e) => {
+  const handleFridgeSubmit = (items, diet, e) => {
     e.preventDefault();
     const fridgeItems = items
       .filter((item) => item.value.length > 0 && item.value != null)
@@ -270,7 +270,7 @@ function App() {
       <FridgeModal
         isOpen={formModal === "fridge-modal"}
         onClose={handlFormClose}
-        onSubmit={handeFridgeSubmit}
+        onSubmit={handleFridgeSubmit}
         formTitle="Fridge Form"
         formSubtitle="Choose your diet and add your fridge items.
         Enter a minumum of 2 items"
