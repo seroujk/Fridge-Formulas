@@ -1,7 +1,8 @@
 require("dotenv").config();
+const cors = require("cors");
 const express = require("express");
 const router = require("./routes/index");
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
 const { errors } = require("celebrate");
 const errorHandler = require("./middlewares/error-handler");
@@ -12,7 +13,12 @@ mongoose.connect("mongodb://127.0.0.1:27017/Fridge_Formulas_db");
 const { PORT = 3001 } = process.env;
 
 app.use(express.json());
+
+app.use(cors());
+
 app.use(requestLogger);
+
+app.use(express.json());
 
 app.get("/crash-test", () => {
   setTimeout(() => {
@@ -24,9 +30,7 @@ app.use(router);
 app.use(errorLogger); // enabling the error logger
 // Handling all undefined routes (404)
 app.use((req, res) => {
-  res
-    .status(404)
-    .send({ message: "Requested resource not found" });
+  res.status(404).send({ message: "Requested resource not found" });
 });
 
 // celebrate error handler

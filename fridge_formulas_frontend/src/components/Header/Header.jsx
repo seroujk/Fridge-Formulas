@@ -106,9 +106,9 @@ function Header({ onButtonClick, formModal, isLoggedIn, onLogout }) {
                     className="header__avatar-image"
                   />
                 ) : (
-                  <AvatarPlaceholder username={currentUser.username} />
+                  <AvatarPlaceholder username={currentUser.name} />
                 )}
-                <p>{currentUser.username}</p>
+                <p>{currentUser.name}</p>
               </div>
             </div>
           )}

@@ -17,14 +17,13 @@ import EditProfileModal from "./components/EditProfileModal/EditProfileModal";
 import MyMealPlans from "./components/MyMealPlans/MyMealPlans";
 import NoAccessMessage from "./components/NoAccessMessage/NoAccessMessage";
 import { getRecipeInfo } from "./utils/OpenAIApi";
-import { v4 as uuidv4 } from "uuid";
+import { createUser, loginUser, getUser, editUser } from "./utils/api";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [formModal, setFormModal] = useState(null);
   const [userInput, setUserInput] = useState(null);
   const [recipes, setRecipes] = useState(null);
-  const [pendingRecipes, setPendingRecipes] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState(null);
   const [email, setEmail] = useState(null);
@@ -48,23 +47,23 @@ function App() {
     }
   }, [userInput]);
 
+  //Staying logged in after refresh
   useEffect(() => {
-    const userlist = JSON.parse(localStorage.getItem("userList"));
-    const token = JSON.parse(localStorage.getItem("JWT"));
-    if (token && userlist) {
-      const userThatHasToken = userlist.find((u) => u.id === token.uniqueID);
+    const token = localStorage.getItem("token");
+    if (!token) return;
 
-      if (userThatHasToken) {
+    getUser(token)
+      .then((user) => {
+        setCurrentUser(user);
         setIsLoggedIn(true);
-        setCurrentUser(userThatHasToken);
-      } else {
+        setUsername(user.name);
+        setAvatar(user.avatar);
+      })
+      .catch(() => {
+        localStorage.removeItem("token");
         setIsLoggedIn(false);
         setCurrentUser(null);
-      }
-    } else {
-      setIsLoggedIn(false);
-      setCurrentUser(null);
-    }
+      });
   }, []);
 
   const handleFormOpen = (formModal) => {
@@ -95,107 +94,78 @@ function App() {
     }
   };
 
-  const handleSavePendingRecipes = (user) => {
-    const userList = JSON.parse(localStorage.getItem("userList"));
-    if (user && pendingRecipes) {
-      pendingRecipes.forEach((singleRecipe) => user.recipes.push(singleRecipe));
-      //Find the user in the userlist and update it
-      const index = userList.findIndex(u => u.id === user.id)
-      userList[index] = user;
-      localStorage.setItem("userList", JSON.stringify(userList));
-      setCurrentUser(user);
-    }
-  };
-
   const handleSignUp = (e) => {
     e.preventDefault();
-    //generate unique ID for that user
-    const userId = uuidv4();
-    //generate an authentication token for the user
-    const tokenData = {
-      uniqueID: userId,
-      expiresAt: Date.now() + 24 * 60 * 60 * 1000, //24 hours from now
-    };
-    // convert token data to string and store
-    const token = JSON.stringify(tokenData);
-    localStorage.setItem("JWT", token);
-    //create a user object and add the unique ID to it
-    const user = {
-      id: userId,
-      username: username,
-      email: email,
-      password: password,
-      avatar: avatar,
-      recipes: [],
-    };
+    createUser({
+      name: username,
+      avatar,
+      email,
+      password,
+    })
+      .then(() => {
+        return loginUser({ email, password });
+      })
+      .then(({ token }) => {
+        localStorage.setItem("token", token);
+        return getUser(token);
+      })
+      .then((user) => {
+        setCurrentUser(user);
+        setIsLoggedIn(true);
+        setIsValidUser(true);
+        //Set these to display in header
+        setUsername(user.name);
+        setAvatar(user.avatar);
 
-    //set current user as the newly signed up user
-    setCurrentUser(user);
-    //Retrieve the user list from local storage or if there isn't one initialize it
-    let userList = JSON.parse(localStorage.getItem("userList")) || [];
-    const newUser = user;
-    userList.push(newUser);
-    localStorage.setItem("userList", JSON.stringify(userList));
-    setIsLoggedIn(true);
-    handleSavePendingRecipes(user);
-    setPendingRecipes(null);
-    navigate("/my-meal-plans");
+        handlFormClose();
+        navigate("/my-meal-plans");
+      })
+      .catch((err) => {
+        console.error(`Sign up failed : ${err}`);
+        setIsValidUser(false);
+      });
   };
 
   const handleLogin = (e) => {
     e.preventDefault();
-    //Retrieve user list from local storage
-    const userList = JSON.parse(localStorage.getItem("userList"));
-    //if user list exists
-    if (userList) {
-      const user = userList.find(
-        (u) => u.email === email && u.password === password
-      );
-      if (user) {
-        //generate an authentication token for the user
-        const tokenData = {
-          uniqueID: user.id,
-          expiresAt: Date.now() + 24 * 60 * 60 * 1000, //24 hours from now
-        };
-        // convert token data to string and store
-        const token = JSON.stringify(tokenData);
-        localStorage.setItem("JWT", token);
+    loginUser({ email, password })
+      .then(({ token }) => {
+        localStorage.setItem("token", token);
+        return getUser(token);
+      })
+      .then((user) => {
         setCurrentUser(user);
         setIsLoggedIn(true);
         setIsValidUser(true);
-        setUsername(user.username);
+        setUsername(user.name);
         setAvatar(user.avatar);
-        handlFormClose("login-modal");
-        handleSavePendingRecipes(user);
-        setPendingRecipes(null);
+
+        handlFormClose();
         navigate("/my-meal-plans");
-      } else {
+      })
+      .catch((err) => {
+        console.error(`Login Error: ${err}`);
         setIsValidUser(false);
-        console.error("Invalid username or password");
-      }
-    } else {
-      setIsValidUser(false);
-    }
+      });
   };
 
   const handleLogOut = () => {
-    localStorage.removeItem("JWT");
+    localStorage.removeItem("token");
     setIsLoggedIn(false);
     setCurrentUser(null);
   };
 
   const handleProfileEdit = (e) => {
     e.preventDefault();
-    //Retrieve user list from local storage
-    const userList = JSON.parse(localStorage.getItem("userList"));
-    const user = userList.find(
-      (u) => u.email === email && u.password === password
-    );
-
-    user.username = username;
-    user.avatar = avatar;
-
-    localStorage.setItem("userList", JSON.stringify(userList));
+    const token = localStorage.getItem("token");
+    editUser(token, { name: username, avatar })
+      .then((updatedUser) => {
+        setCurrentUser(updatedUser);
+        handlFormClose();
+      })
+      .catch((err) => {
+        console.log(`Error updating profile: ${err}`);
+      });
   };
 
   return (
@@ -330,7 +300,6 @@ function App() {
         onButtonClick={handleSaveRecipes}
         onNotLoggedIn={handleFormOpen}
         formModal="login-modal"
-        setPendingRecipes={setPendingRecipes}
       />
 
       <Footer />

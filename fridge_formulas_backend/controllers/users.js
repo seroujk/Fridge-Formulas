@@ -63,20 +63,24 @@ module.exports.signup = (req, res, next) => {
   const { name, avatar, email, password } = req.body;
   bcrypt
     .hash(password, 10)
-    .then((hashedPassword) => User.create({ name, avatar, email, password: hashedPassword })
+    .then((hashedPassword) => {
+      const userData = {name, email, password: hashedPassword};
+      if(avatar) userDatata.avatar = avatar;
+     return User.create(userData)}
     )
     .then((user) => {
       const userObject = user.toObject();
       delete userObject.password;
+      console.log(userObject);
       res.status(200).send(userObject);
     })
     .catch((error) => {
       if (error.name === "ValidationError") {
-        const err = new BadRequestError("Inavlid user data");
+        const err = new BadRequestError("Invalid user data");
         return next(err);
       }
       if (error.code === 11000) {
-        const err = new ConflictError("Email already exsits");
+        const err = new ConflictError("Email already exists");
         return next(err);
       }
 
