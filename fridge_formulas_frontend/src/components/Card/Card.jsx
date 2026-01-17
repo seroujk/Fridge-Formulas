@@ -1,6 +1,8 @@
 import "./Card.css";
+import { useLocation } from "react-router-dom";
+function Card({ cardTitle, cardPoints, cardIcon, onDelete }) {
+  const location = useLocation();
 
-function Card({ cardTitle, cardPoints, cardIcon }) {
   return (
     <div className="card">
       <div className="card__title">
@@ -14,6 +16,11 @@ function Card({ cardTitle, cardPoints, cardIcon }) {
           })}
         </ul>
       </div>
+      {location.pathname === "/my-meal-plans" ? (
+        <button className="card__delete-btn" onClick={onDelete}>
+          Delete
+        </button>
+      ) : null}
     </div>
   );
 }

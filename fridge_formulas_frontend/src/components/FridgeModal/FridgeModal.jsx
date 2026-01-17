@@ -141,7 +141,6 @@ function FirdgeModal({
               className="modal__submit-button-fridge"
               onClick={() => {
                 openForm(formToOpen);
-                // onClose();
                 setIsReadyButton(false);
                 setDiet(null);
                 setItems([{ id: 1, value: "" }]);

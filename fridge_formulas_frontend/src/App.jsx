@@ -16,14 +16,22 @@ import SignUpModal from "./components/SignUpModal/SignUpModal";
 import EditProfileModal from "./components/EditProfileModal/EditProfileModal";
 import MyMealPlans from "./components/MyMealPlans/MyMealPlans";
 import NoAccessMessage from "./components/NoAccessMessage/NoAccessMessage";
-import { getRecipeInfo } from "./utils/OpenAIApi";
-import { createUser, loginUser, getUser, editUser } from "./utils/api";
+import {
+  createUser,
+  loginUser,
+  getUser,
+  editUser,
+  generateMeals,
+  saveMeals,
+  deleteMeal,
+} from "./utils/api";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [formModal, setFormModal] = useState(null);
   const [userInput, setUserInput] = useState(null);
-  const [recipes, setRecipes] = useState(null);
+  const [meals, setMeals] = useState(null);
+  const [hasUnsavedMeals, setHasUnsavedMeals] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState(null);
   const [email, setEmail] = useState(null);
@@ -31,17 +39,14 @@ function App() {
   const [avatar, setAvatar] = useState(null);
   const [isValidUser, setIsValidUser] = useState(true);
 
-  // Use this code for a reset users and recipes
-  //localStorage.removeItem("userList");
-
   const navigate = useNavigate();
 
   useEffect(() => {
     if (userInput) {
-      getRecipeInfo(userInput)
-        .then((res) => {
-          const content = res.choices?.[0].message?.content;
-          setRecipes(JSON.parse(content));
+      generateMeals(userInput)
+        .then((mealResponse) => {
+          setMeals(mealResponse.meals);
+          setHasUnsavedMeals(true); // marking that the user has unsaved meals
         })
         .catch((err) => console.error("API Error:", err));
     }
@@ -84,14 +89,56 @@ function App() {
     setUserInput([diet, fridgeItems]);
   };
 
-  const handleSaveRecipes = (newRecipes) => {
-    const userList = JSON.parse(localStorage.getItem("userList"));
-    const user = userList.find((u) => u.email === currentUser.email);
-    if (user) {
-      newRecipes.forEach((singleRecipe) => user.recipes.push(singleRecipe));
-      localStorage.setItem("userList", JSON.stringify(userList));
-      setCurrentUser(currentUser);
+  const handleSaveUserMeals = () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    saveMeals(token, meals)
+      .then((res) => {
+        console.log("Saved:", res);
+        navigate("/my-meal-plans");
+        handlFormClose();
+      })
+      .catch((err) => console.error("Save meals error:", err));
+  };
+
+  //Helper to save pending meals
+  // we're passing token to this function instead of pulling token from local storage because this way:
+  // 1. we have a single source of turth during auth
+  // 2. Functions that depend on the global state of local storage are harder to reason about
+  // 3. Future proofing (for example in the future we might move on to memory-based tokens)
+  const savePendingMeals = (token) => {
+    if (!hasUnsavedMeals || !meals?.length) {
+      return Promise.resolve(null);
     }
+
+    return saveMeals(token, meals)
+      .then((res) => {
+        setHasUnsavedMeals(false); //no longer pending
+        return res;
+      })
+      .catch((err) => {
+        console.error("Auto-save pending meals failed:", err);
+        return null;
+      });
+  };
+
+  const handleDeleteUserMeals = (mealId) => {
+    const token = localStorage.getItem("token");
+    deleteMeal(mealId, token)
+      .then(() => {
+        // remove the deleted meal from current user state so that the UI updated instantly
+        // prev is our freshet current user without the deleted meal
+          setCurrentUser((prev)=>{
+            if(!prev) return prev;
+
+            const nextMeals = (prev.meals || []).filter(
+              (meal) => meal._id !== mealId
+              )
+            return {...prev,meals: nextMeals}
+          })
+      })
+      .catch((err) => console.error(err));
   };
 
   const handleSignUp = (e) => {
@@ -107,7 +154,7 @@ function App() {
       })
       .then(({ token }) => {
         localStorage.setItem("token", token);
-        return getUser(token);
+        return Promise.all([getUser(token), savePendingMeals(token)]);
       })
       .then((user) => {
         setCurrentUser(user);
@@ -131,7 +178,7 @@ function App() {
     loginUser({ email, password })
       .then(({ token }) => {
         localStorage.setItem("token", token);
-        return getUser(token);
+        return Promise.all([getUser(token), savePendingMeals(token)]);
       })
       .then((user) => {
         setCurrentUser(user);
@@ -224,6 +271,7 @@ function App() {
                 <MyMealPlans
                   onButtonClick={handleFormOpen}
                   formModal={"fridge-modal"}
+                  onDelete={handleDeleteUserMeals}
                 />
               ) : (
                 <NoAccessMessage
@@ -289,15 +337,15 @@ function App() {
       />
       <MealPlansModal
         isOpen={formModal === "meal-plans-modal"}
-        recipes={recipes}
+        meals={meals}
         onClose={handlFormClose}
-        buttonText1="SaveRecipes"
+        buttonText1="Save Meals"
         buttonText2="Generate New Meals"
         formTitle="Your Meal Plan"
         isLoggedIn={isLoggedIn}
         isValidUser={isValidUser}
         setIsValidUser={setIsValidUser}
-        onButtonClick={handleSaveRecipes}
+        onButtonClick={handleSaveUserMeals}
         onNotLoggedIn={handleFormOpen}
         formModal="login-modal"
       />

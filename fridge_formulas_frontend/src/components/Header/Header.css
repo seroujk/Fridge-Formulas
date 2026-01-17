@@ -209,10 +209,6 @@
   }
 }
 
-.avatar-placeholder__letter{
-  margin-bottom: 4px;
-}
-
 @media (max-width: 768px) {
   .header a {
     text-decoration: none;
@@ -300,4 +296,6 @@
     color: black;
     font-size: 14px;
   }
+
+
 }

@@ -3,7 +3,7 @@ import Card from "../Card/Card";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 function MealPlansModal({
   isOpen,
-  recipes,
+  meals,
   onClose,
   buttonText1,
   buttonText2,
@@ -14,9 +14,8 @@ function MealPlansModal({
   onButtonClick,
   onNotLoggedIn,
   formModal,
-  setPendingRecipes,
 }) {
-  if (recipes) {
+  if (meals) {
     return (
       <ModalWithForm
         isOpen={isOpen}
@@ -28,13 +27,13 @@ function MealPlansModal({
         setIsValidUser={setIsValidUser}
       >
         <div className="modal__meal-plans">
-          {recipes.map((recipe, index) => {
+          {meals.map((meal, index) => {
             return (
               <Card
                 key={index}
-                cardTitle={recipe.recipeTitle}
-                cardIcon={recipe.recipeIcon}
-                cardPoints={recipe.recipeInstructions}
+                cardTitle={meal.mealTitle}
+                cardIcon={meal.mealIcon}
+                cardPoints={meal.mealInstructions}
               />
             );
           })}
@@ -43,12 +42,9 @@ function MealPlansModal({
           className="modal__submit-button modal__plan-save-button"
           onClick={() => {
             if (isLoggedIn) {
-              onButtonClick(recipes);
-            }
-            else{
-              setPendingRecipes(recipes);
+              onButtonClick();
+            } else {
               onNotLoggedIn(formModal);
-
             }
           }}
         >
